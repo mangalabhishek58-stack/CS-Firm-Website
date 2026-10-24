@@ -21,6 +21,8 @@ export const services = [
       'Proprietorships and partnerships moving to a company or LLP structure',
       'Non-profit initiatives considering a Section 8 company',
     ],
+    // Official links shown on the detail page (ids from data/resources.js).
+    resources: ['mca-portal', 'mca-acts-rules', 'gst-portal', 'income-tax-portal'],
   },
   {
     slug: 'annual-roc-compliance',
@@ -40,6 +42,8 @@ export const services = [
       'Businesses with pending or overdue ROC filings',
       'Teams that want one partner to track deadlines',
     ],
+    // Official links shown on the detail page (ids from data/resources.js).
+    resources: ['mca-portal', 'mca-acts-rules'],
   },
   {
     slug: 'secretarial-audit',
@@ -58,6 +62,8 @@ export const services = [
       'Public companies that meet the prescribed thresholds',
       'Companies that want an independent compliance health-check',
     ],
+    // Official links shown on the detail page (ids from data/resources.js).
+    resources: ['mca-acts-rules', 'icsi-secretarial-standards', 'sebi-regulations'],
   },
   {
     slug: 'board-and-general-meetings',
@@ -75,6 +81,8 @@ export const services = [
       'Companies without an in-house company secretary',
       'Boards that want clear, well-kept records',
     ],
+    // Official links shown on the detail page (ids from data/resources.js).
+    resources: ['icsi-secretarial-standards', 'mca-acts-rules'],
   },
   {
     slug: 'fema-rbi-compliance',
@@ -92,6 +100,8 @@ export const services = [
       'Startups raising funds from overseas investors',
       'Businesses investing outside India',
     ],
+    // Official links shown on the detail page (ids from data/resources.js).
+    resources: ['rbi-firms', 'rbi-master-directions', 'rbi-fema'],
   },
   {
     slug: 'corporate-changes-restructuring',
@@ -110,6 +120,8 @@ export const services = [
       'Groups reorganising their entities',
       'Companies planning to close an inactive entity',
     ],
+    // Official links shown on the detail page (ids from data/resources.js).
+    resources: ['mca-portal', 'mca-acts-rules'],
   },
   {
     slug: 'sebi-listing-compliance',
@@ -127,6 +139,8 @@ export const services = [
       'Companies listed on the main board or SME platforms',
       'Companies preparing for a listing',
     ],
+    // Official links shown on the detail page (ids from data/resources.js).
+    resources: ['sebi-regulations', 'bse', 'nse'],
   },
 ]
 

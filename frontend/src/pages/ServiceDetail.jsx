@@ -2,8 +2,10 @@ import { Link, useParams } from 'react-router-dom'
 import PageHero from '../components/PageHero.jsx'
 import Button from '../components/Button.jsx'
 import CtaStrip from '../components/CtaStrip.jsx'
+import ExternalLink from '../components/ExternalLink.jsx'
 import NotFound from './NotFound.jsx'
 import { getServiceBySlug, services } from '../data/services.js'
+import { getResourcesByIds } from '../data/resources.js'
 import { usePageMeta } from '../hooks/usePageMeta.js'
 
 export default function ServiceDetail() {
@@ -18,6 +20,7 @@ function ServiceDetailContent({ service }) {
   usePageMeta(service.title, service.summary)
 
   const otherServices = services.filter((item) => item.slug !== service.slug)
+  const usefulLinks = getResourcesByIds(service.resources)
 
   return (
     <>
@@ -56,8 +59,25 @@ function ServiceDetailContent({ service }) {
             <Button to={`/contact?service=${service.slug}`}>Enquire about this service</Button>
           </div>
 
-          <aside className="detail-layout__aside" aria-labelledby="other-services-title">
-            <h2 id="other-services-title" className="aside-title">Other services</h2>
+          <aside className="detail-layout__aside">
+            {usefulLinks.length > 0 && (
+              <section className="aside-box" aria-labelledby="useful-links-title">
+                <h2 id="useful-links-title" className="aside-title">Useful official links</h2>
+                <ul className="useful-links">
+                  {usefulLinks.map((resource) => (
+                    <li key={resource.id}>
+                      <ExternalLink href={resource.url}>{resource.title}</ExternalLink>
+                      <span className="useful-links__description">{resource.description}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link to="/resources" className="aside-box__more">
+                  All resources →
+                </Link>
+              </section>
+            )}
+
+            <h2 className="aside-title">Other services</h2>
             <ul className="link-list">
               {otherServices.map((item) => (
                 <li key={item.slug}>

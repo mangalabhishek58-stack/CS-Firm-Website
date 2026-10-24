@@ -23,6 +23,7 @@ export default function Footer() {
           <ul className="site-footer__list">
             <li><Link to="/about">About</Link></li>
             <li><Link to="/services">Services</Link></li>
+            <li><Link to="/resources">Resources</Link></li>
             <li><Link to="/contact">Contact</Link></li>
             <li><Link to="/privacy">Privacy policy</Link></li>
           </ul>

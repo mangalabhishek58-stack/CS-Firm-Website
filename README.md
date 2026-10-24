@@ -69,7 +69,9 @@ preview the form's error states.
 ## Editing content
 
 - Firm details: `frontend/src/data/firm.js`
-- Services: `frontend/src/data/services.js`
+- Services: `frontend/src/data/services.js` (each service's `resources` lists its official links)
+- Official links for `/resources`: `frontend/src/data/resources.js` – official sources only; re-check
+  them periodically and update `RESOURCES_LAST_CHECKED`
 
 Text in `[square brackets]` is a placeholder and is highlighted on the site. The founder profile and
 logo are demo content. Replace all of these with verified details before going live, and review ICSI
