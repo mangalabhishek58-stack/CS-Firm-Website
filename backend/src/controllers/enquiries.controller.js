@@ -1,7 +1,9 @@
 const { validateEnquiry } = require('../validators/enquiry.validator');
-const { sendEnquiryNotification } = require('../services/email.service');
+const { sendEnquiryNotification, isEmailConfigured } = require('../services/email.service');
 
 const SUCCESS_MESSAGE = 'Thank you. Your enquiry has been received.';
+const UNAVAILABLE_MESSAGE =
+  'Sorry, we could not send your enquiry just now. Please try again in a few minutes, or contact us by phone or email.';
 
 async function createEnquiry(req, res) {
   const body = req.body ?? {};
@@ -21,7 +23,21 @@ async function createEnquiry(req, res) {
     });
   }
 
-  const result = await sendEnquiryNotification(value);
+  // Enquiries are not stored anywhere else yet, so in production a missing
+  // email setup must fail loudly rather than silently drop the enquiry.
+  if (process.env.NODE_ENV === 'production' && !isEmailConfigured()) {
+    console.error('[enquiry] email is not configured - enquiry could not be delivered');
+    return res.status(503).json({ success: false, message: UNAVAILABLE_MESSAGE });
+  }
+
+  let result;
+  try {
+    result = await sendEnquiryNotification(value);
+  } catch (err) {
+    // Log the provider error without personal data.
+    console.error(`[enquiry] email delivery failed: ${err.code || 'ERROR'} ${err.responseCode || ''}`.trim());
+    return res.status(503).json({ success: false, message: UNAVAILABLE_MESSAGE });
+  }
 
   // Log without personal data (no name, email, phone or message text).
   console.log(

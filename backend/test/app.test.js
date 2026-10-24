@@ -5,6 +5,10 @@ const express = require('express');
 // Keep the enquiry rate limit out of the way for these tests;
 // the limiter itself is tested separately below.
 process.env.ENQUIRY_RATE_LIMIT_MAX = '1000';
+// Blank SMTP settings so a real backend/.env never sends email during tests
+// (dotenv does not override variables that are already set).
+process.env.SMTP_HOST = '';
+process.env.SMTP_PASS = '';
 const app = require('../src/app');
 const { createRateLimiter } = require('../src/middleware/rateLimit');
 
@@ -38,7 +42,21 @@ function postEnquiry(body, headers = {}) {
 test('GET /api/health returns success', async () => {
   const res = await fetch(`${baseUrl}/api/health`);
   assert.equal(res.status, 200);
-  assert.deepEqual(await res.json(), { success: true, message: 'CS Firm API is running' });
+  const data = await res.json();
+  assert.equal(data.success, true);
+  assert.equal(data.message, 'CS Firm API is running');
+  assert.equal(data.dev.emailConfigured, false);
+  assert.equal(data.dev.pid, process.pid);
+});
+
+test('GET /api/health hides dev details in production', async () => {
+  process.env.NODE_ENV = 'production';
+  try {
+    const data = await (await fetch(`${baseUrl}/api/health`)).json();
+    assert.deepEqual(data, { success: true, message: 'CS Firm API is running' });
+  } finally {
+    delete process.env.NODE_ENV;
+  }
 });
 
 test('accepts a valid enquiry', async () => {
@@ -88,6 +106,14 @@ test('rejects non-string field values', async () => {
   const data = await res.json();
   assert.ok(data.errors.name);
   assert.ok(data.errors.message);
+});
+
+test('rejects line breaks in single-line fields', async () => {
+  const res = await postEnquiry({ ...validEnquiry, name: 'Asha\r\nBcc: someone@example.com', service: 'Audit\n' + 'x' });
+  assert.equal(res.status, 400);
+  const data = await res.json();
+  assert.ok(data.errors.name);
+  assert.ok(data.errors.service);
 });
 
 test('rejects an over-long message', async () => {

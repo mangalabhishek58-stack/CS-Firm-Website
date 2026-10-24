@@ -7,7 +7,8 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000
 // without the backend running.
 const USE_MOCK_API = import.meta.env.VITE_USE_MOCK_API === 'true'
 
-const REQUEST_TIMEOUT_MS = 15000
+// Allows for the backend sending the notification email before replying.
+const REQUEST_TIMEOUT_MS = 30000
 
 export class ApiError extends Error {
   constructor(message, { status = 0, fieldErrors = null } = {}) {

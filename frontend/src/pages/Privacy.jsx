@@ -44,6 +44,10 @@ export default function Privacy() {
             We use this information only to respond to your enquiry and, if you choose to engage us, to discuss and
             set up that engagement. We do not sell your information or share it with third parties for marketing.
           </p>
+          <p>
+            Enquiries are delivered to our inbox by email, so your details pass through our email service provider
+            for that purpose only.
+          </p>
 
           <h2>What not to send</h2>
           <p>

@@ -11,6 +11,9 @@ const LIMITS = {
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const PHONE_PATTERN = /^\+?[0-9\s\-()]+$/;
+// Line breaks and other control characters are only allowed in the message.
+// eslint-disable-next-line no-control-regex
+const CONTROL_CHARS = /[\u0000-\u001f\u007f]/;
 
 // Returns the trimmed string, '' when missing, or null when not a string.
 function readString(input, field) {
@@ -39,6 +42,7 @@ function validateEnquiry(input) {
   if (!name) errors.name = 'Full name is required.';
   else if (name.length < LIMITS.name.min) errors.name = 'Please enter your full name.';
   else if (name.length > LIMITS.name.max) errors.name = `Name must be ${LIMITS.name.max} characters or fewer.`;
+  else if (CONTROL_CHARS.test(name)) errors.name = 'Please enter your full name.';
 
   if (!email) errors.email = 'Email address is required.';
   else if (email.length > LIMITS.email.max || !EMAIL_PATTERN.test(email)) {
@@ -55,7 +59,9 @@ function validateEnquiry(input) {
   }
 
   if (!service) errors.service = 'Please choose a service.';
-  else if (service.length > LIMITS.service.max) errors.service = 'Please choose a valid service.';
+  else if (service.length > LIMITS.service.max || CONTROL_CHARS.test(service)) {
+    errors.service = 'Please choose a valid service.';
+  }
 
   if (!message) errors.message = 'Message is required.';
   else if (message.length < LIMITS.message.min) {
