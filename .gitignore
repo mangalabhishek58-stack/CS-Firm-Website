@@ -147,3 +147,11 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Project-specific (cs-firm-website)
+**/node_modules/
+**/dist/
+**/.env
+**/.env.*
+!**/.env.example
+.DS_Store
